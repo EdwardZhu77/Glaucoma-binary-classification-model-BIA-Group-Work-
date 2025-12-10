@@ -1,18 +1,59 @@
 import os
-from glaucoma_vision.utils.dl_utils import load_dl_data, load_dl_model, DEVICE
-from glaucoma_vision.utils.evaluation import (calculate_metrics, collect_dl_predictions)
+import numpy as np
+import pandas as pd
+from sklearn.metrics import (
+    classification_report, confusion_matrix, accuracy_score,
+    roc_auc_score, average_precision_score
+)
+
+from glaucoma_vision.utils.dl_utils import (
+    get_device,
+    load_dl_model,
+    dl_model_inference
+)
 
 def evaluate_densenet(
     model_path: str,
+    val_dir: str,  
     csv_path: str,
-    test_size: float = 0.2,
-    random_state: int = 42
+    img_size: tuple = (224, 224), 
+    batch_size: int = 8
 ):
-    test_loader = load_dl_data(csv_path, model_type="densenet", test_size=test_size, random_state=random_state)
-    model = load_dl_model(model_path, model_type="densenet")
-    y_true, y_pred, y_scores = collect_dl_predictions(model, test_loader, model_type="densenet")
-    metrics = calculate_metrics(y_true, y_pred, y_scores)
+
+    print("[DenseNet121 Evaluator] Starting evaluation...")
+
+    df = pd.read_csv(csv_path)
+    print(f"✅ Loaded CSV file: {csv_path} (Samples: {len(df)})")
     
+
+    model = load_dl_model("densenet121", model_path)
+
+    y_true, y_scores = dl_model_inference(
+        model=model,
+        val_dir=val_dir,
+        csv_df=df,
+        img_size=img_size,
+        batch_size=batch_size
+    )
+    y_pred = (y_scores >= 0.5).astype(int)
+    
+
+    report = classification_report(
+        y_true, y_pred,
+        target_names=['Glaucoma_Negative', 'Glaucoma_Positive'],
+        output_dict=True
+    )
+    tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
+    
+    metrics = {
+        "accuracy": float(accuracy_score(y_true, y_pred)),
+        "auroc": float(roc_auc_score(y_true, y_scores)),
+        "auprc": float(average_precision_score(y_true, y_scores)),
+        "negative_f1": float(report['Glaucoma_Negative']['f1-score']),
+        "positive_f1": float(report['Glaucoma_Positive']['f1-score']),
+        "confusion_matrix": {"TP": int(tp), "TN": int(tn), "FP": int(fp), "FN": int(fn)}
+    }
+
     print("\n" + "="*50)
     print("DENSENET (IMAGE ONLY) METRICS")
     print("="*50)
@@ -36,3 +77,4 @@ def evaluate_densenet(
     print("="*50 + "\n")
     
     return metrics
+
