@@ -1,14 +1,10 @@
 import os
 from glaucoma_vision.utils.dl_utils import load_dl_data, load_dl_model, DEVICE
-from glaucoma_vision.utils.evaluation import (
-    calculate_metrics, plot_evaluation_metrics, save_evaluation_results,
-    collect_dl_predictions, plot_gradcam
-)
+from glaucoma_vision.utils.evaluation import (calculate_metrics, collect_dl_predictions)
 
 def evaluate_densenet(
     model_path: str,
     csv_path: str,
-    save_dir: str,
     test_size: float = 0.2,
     random_state: int = 42
 ):
@@ -16,9 +12,7 @@ def evaluate_densenet(
     model = load_dl_model(model_path, model_type="densenet")
     y_true, y_pred, y_scores = collect_dl_predictions(model, test_loader, model_type="densenet")
     metrics = calculate_metrics(y_true, y_pred, y_scores)
-
-  
-    # print the results
+    
     print("\n" + "="*50)
     print("DENSENET (IMAGE ONLY) METRICS")
     print("="*50)
@@ -27,18 +21,18 @@ def evaluate_densenet(
     print(f"Accuracy                     : {metrics['accuracy']:.4f}")
     print(f"AUROC Score                  : {metrics['auroc']:.4f}")
     print(f"AUPRC Score                  : {metrics['auprc']:.4f}")
-    print("-" * 50)
-    print(f"Confusion Matrix -> TP: {metrics['confusion_matrix']['TP']}, TN: {metrics['confusion_matrix']['TN']}, FP: {metrics['confusion_matrix']['FP']}, FN: {metrics['confusion_matrix']['FN']}")
+    
+    print("\n" + "-"*50)
+    print("DenseNet Confusion Matrix (TN, FP, FN, TP)")
+    print("-"*50)
+    tn = metrics['confusion_matrix']['TN']
+    fp = metrics['confusion_matrix']['FP']
+    fn = metrics['confusion_matrix']['FN']
+    tp = metrics['confusion_matrix']['TP']
+    print(f"                Predicted Negative  Predicted Positive")
+    print(f"Actual Negative        {tn:<10}           {fp:<10}")
+    print(f"Actual Positive        {fn:<10}           {tp:<10}")
+    print(f"\nConfusion Matrix Values -> TP: {tp}, TN: {tn}, FP: {fp}, FN: {fn}")
     print("="*50 + "\n")
     
-    # visualize
-    plot_path = os.path.join(save_dir, "densenet_evaluation_plots.png")
-    plot_evaluation_metrics(y_true, y_scores, y_pred, plot_path)
-    
-    # Grad-CAM visulazie
-    target_layer = model.features.denseblock4.denselayer16.conv2
-    plot_gradcam(model, test_loader, target_layer, save_dir, model_type="densenet")
-    
-    # save the results
-    save_evaluation_results(metrics, save_dir, "densenet")
     return metrics
