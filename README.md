@@ -11,23 +11,23 @@ The project implements a dual-stream approach:
 ## Project Structure
 The repository is organized as follows:
 
-glaucoma-vision/
-├── models/
-│   ├── dl/                 # Deep Learning Evaluation Scripts
-│   │   ├── evaluate_convnext.py
-│   │   ├── evaluate_densenet.py
-│   │   ├── evaluate_mobilenet.py
-│   │   └── evaluate_resnet18.py
-│   └── ml/                 # Machine Learning Evaluation Scripts
-│       ├── evaluate_rf.py         (Random Forest)
-│       ├── evaluate_svm.py        (Support Vector Machine)
-│       └── evaluate_xgb.py        (XGBoost with SHAP)
-├── utils/                  # Helper functions for data loading & preprocessing
-├── Tutorial 1...           # Guide for Image-Only Evaluation
-├── Tutorial 2...           # Guide for Hybrid (ExpCDR) Evaluation
-├── glaucoma.csv            # Clinical metadata (ExpCDR, labels)
-├── requirement list.text   # Project dependencies
-└── README.md               # Project Documentation
+glaucoma-vision/  
+├── models/  
+│   ├── dl/                 # Deep Learning Evaluation Scripts  
+│   │   ├── evaluate_convnext.py  
+│   │   ├── evaluate_densenet.py 
+│   │   ├── evaluate_mobilenet.py  
+│   │   └── evaluate_resnet18.py  
+│   └── ml/                 # Machine Learning Evaluation Scripts  
+│       ├── evaluate_rf.py         (Random Forest)  
+│       ├── evaluate_svm.py        (Support Vector Machine)  
+│       └── evaluate_xgb.py        (XGBoost with SHAP)  
+├── utils/                  # Helper functions for data loading & preprocessing  
+├── Tutorial 1...           # Guide for Image-Only Evaluation  
+├── Tutorial 2...           # Guide for Hybrid (ExpCDR) Evaluation  
+├── glaucoma.csv            # Clinical metadata (ExpCDR, labels)  
+├── requirement list.text   # Project dependencies  
+└── README.md               # Project Documentation  
 
 ## Installation and Setup
 
