@@ -14,7 +14,7 @@ glaucoma-vision/
 ├── models/  
 │   ├── dl/                 # Deep Learning Evaluation Scripts  
 │   │   ├── evaluate_convnext.py  
-│   │   ├── evaluate_densenet.py 
+│   │   ├── evaluate_densenet.py  
 │   │   ├── evaluate_mobilenet.py  
 │   │   └── evaluate_resnet18.py  
 │   └── ml/                 # Machine Learning Evaluation Scripts  
