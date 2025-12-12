@@ -12,18 +12,18 @@ The repository is organized as follows:
 
 glaucoma-vision/  
 ├── models/  
-│   ├── dl/                 # Deep Learning Evaluation Scripts  
+│   ├── dl/                         # Deep Learning Evaluation Scripts  
 │   │   ├── evaluate_convnext.py  
 │   │   ├── evaluate_densenet.py  
 │   │   ├── evaluate_mobilenet.py  
 │   │   └── evaluate_resnet18.py  
-│   └── ml/                 # Machine Learning Evaluation Scripts  
-│       ├── evaluate_rf.py         (Random Forest)  
-│       ├── evaluate_svm.py        (Support Vector Machine)  
-│       └── evaluate_xgb.py        (XGBoost with SHAP)  
-├── utils/                  # Helper functions for data loading & preprocessing  
-├── Tutorial 1: Evaluate Image-Only Models          # Guide for Image-Only Evaluation  
-├── Tutorial 2：Evaluate ExpCDR with Models           # Guide for Hybrid (ExpCDR) Evaluation  
+│   └── ml/                         # Machine Learning Evaluation Scripts  
+│       ├── evaluate_rf.py          (Random Forest)  
+│       ├── evaluate_svm.py         (Support Vector Machine)  
+│       └── evaluate_xgb.py         (XGBoost with SHAP)  
+├── utils/                                         # Helper functions for data loading & preprocessing  
+├── Tutorial 1: Evaluate Image-Only Models         # Guide for Image-Only Evaluation  
+├── Tutorial 2：Evaluate ExpCDR with Models        # Guide for Hybrid (ExpCDR) Evaluation  
 ├── glaucoma.csv            # Clinical metadata (ExpCDR, labels)  
 ├── requirement list.text   # Project dependencies  
 └── README.md               # Project Documentation  
