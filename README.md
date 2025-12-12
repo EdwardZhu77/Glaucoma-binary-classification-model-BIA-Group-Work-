@@ -1,11 +1,10 @@
-# Glaucoma-binary-classification-model（BIA-Group-Work）
 # Glaucoma Binary Classification Toolkit (BIA Group Work)
 
 ## Introduction
 This repository contains the source code for our Biological Image Analysis (BIA) coursework. We present a comprehensive benchmarking framework for glaucoma detection using retinal fundus images. Our approach uniquely integrates visual features (via CNN backbones) with clinical metadata (Vertical Cup-to-Disc Ratio - ExpCDR) to enhance diagnostic performance.
 
 The project implements a dual-stream approach:
-1.  **Deep Learning (DL):** Using architectures like DenseNet, ResNet, and ConvNeXt.
+1.  **Deep Learning (DL):** Using architectures like DenseNet, ResNet, MobileNet, and ConvNeXt.
 2.  **Machine Learning (ML):** Using classifiers like XGBoost, SVM, and Random Forest.
 
 ## Project Structure
@@ -23,8 +22,8 @@ glaucoma-vision/
 │       ├── evaluate_svm.py        (Support Vector Machine)  
 │       └── evaluate_xgb.py        (XGBoost with SHAP)  
 ├── utils/                  # Helper functions for data loading & preprocessing  
-├── Tutorial 1...           # Guide for Image-Only Evaluation  
-├── Tutorial 2...           # Guide for Hybrid (ExpCDR) Evaluation  
+├── Tutorial 1: Evaluate Image-Only Models          # Guide for Image-Only Evaluation  
+├── Tutorial 2：Evaluate ExpCDR with Models           # Guide for Hybrid (ExpCDR) Evaluation  
 ├── glaucoma.csv            # Clinical metadata (ExpCDR, labels)  
 ├── requirement list.text   # Project dependencies  
 └── README.md               # Project Documentation  
@@ -81,16 +80,28 @@ We implemented a benchmarking framework consisting of:
 
 ## Results
 
-Below is a summary of our model performance on the test set:
+We evaluated multiple Deep Learning and Machine Learning architectures on the test dataset. The table below presents a comprehensive comparison of Image-Only models versus Hybrid models (denoted with the suffix "-ExpCDR", indicating the inclusion of the Vertical Cup-to-Disc Ratio).
 
-| Model Type | Architecture | Modality | AUC Score |
-| :--- | :--- | :--- | :--- |
-| DL (SOTA) | DenseNet-121 | Hybrid (Img + ExpCDR) | 0.81 |
-| DL | ResNet-18 | Hybrid | 0.78 |
-| ML | XGBoost | Hybrid | 0.77 |
-| ML | SVM | Image Only | 0.65 |
+| Model | Glaucoma_Negative F1 | Glaucoma_Positive F1 | Accuracy | AUROC Score | AUPRC Score |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| DenseNet121 | 0.76 | 0.52 | 0.68 | 0.6661 | 0.4044 |
+| DenseNet121-ExpCDR | 0.58 | 0.47 | 0.53 | 0.6636 | 0.4345 |
+| XGBoost | 0.77 | 0.26 | 0.64 | 0.5533 | 0.2852 |
+| **XGBoost-ExpCDR** | **0.80** | **0.53** | **0.72** | **0.7672** | **0.6007** |
+| SVM | 0.81 | 0.32 | 0.70 | 0.6952 | 0.4162 |
+| SVM-ExpCDR | 0.81 | 0.39 | 0.72 | 0.6915 | 0.4072 |
+| ResNet18 | 0.77 | 0.52 | 0.69 | 0.7056 | 0.4066 |
+| ResNet18-ExpCDR | 0.79 | 0.50 | 0.71 | 0.6792 | 0.3714 |
+| ConvNeXt | 0.80 | 0.51 | 0.72 | 0.7096 | 0.4381 |
+| ConvNeXt-ExpCDR | 0.81 | 0.39 | 0.71 | 0.7086 | 0.3915 |
+| Random Forest (RF) | 0.83 | 0.31 | 0.72 | 0.5533 | 0.3630 |
+| RF-ExpCDR | 0.80 | 0.33 | 0.69 | 0.6468 | 0.3881 |
+| MobileNetV2 | 0.80 | 0.43 | 0.70 | 0.7175 | 0.3926 |
+| MobileNetV2-ExpCDR | 0.80 | 0.52 | 0.72 | 0.6752 | 0.3668 |
 
-Note: Hybrid models significantly outperform Image-Only models, verifying the clinical importance of the vertical cup-to-disc ratio (ExpCDR).
+**Key Findings:**
+1. **Best Overall Performance:** The XGBoost-ExpCDR model achieved the highest performance across most critical metrics, including an AUROC of 0.7672 and an AUPRC of 0.6007.
+2. **Impact of Clinical Data:** The inclusion of ExpCDR significantly boosted the performance of the XGBoost model (AUROC increased from 0.55 to 0.76). However, for deep learning models like DenseNet121 and MobileNetV2, the simple concatenation of clinical data did not always yield performance improvements, suggesting the need for more complex fusion strategies or fine-tuning in future work.
 
 ## Contributors
 
